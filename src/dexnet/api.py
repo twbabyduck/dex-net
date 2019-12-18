@@ -409,7 +409,7 @@ class DexNet(object):
             Database or dataset not opened.
         """
         self._check_opens()
-        config = self._get_config(config)
+        config = YamlConfig(DEXNET_API_DEFAULTS_FILE)
         
         grippers = os.listdir(config['gripper_dir'])
         if gripper_name is not None:
@@ -436,7 +436,6 @@ class DexNet(object):
                         logger.warning("Grasps exist for object {}, gripper {}. ".format(object_name, gripper.name)+
                                         "To overwrite existing grasps, set kwarg overwrite to True")
                         continue
-
                 logger.info('Sampling grasps for object %s' %(object_name))
                 grasps_start = time.time()
                 obj = self.dataset[object_name]
