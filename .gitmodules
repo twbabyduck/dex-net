@@ -1,6 +1,3 @@
-[submodule "deps/visualization"]
-	path = deps/visualization
-	url = https://github.com/BerkeleyAutomation/visualization
 [submodule "deps/meshpy"]
 	path = deps/meshpy
 	url = https://github.com/BerkeleyAutomation/meshpy
@@ -19,3 +16,6 @@
 [submodule "deps/mayavi"]
 	path = deps/mayavi
 	url = https://github.com/enthought/mayavi
+[submodule "deps/visualization"]
+	path = deps/visualization
+	url = https://github.com/twbabyduck/visualization
