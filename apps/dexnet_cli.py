@@ -116,17 +116,18 @@ class DexNet_cli(object):
     API = {0: ('Open a database', 'open_database'),
            1: ('Open a dataset', 'open_dataset'),
            2: ('Add object(s) to the dataset', 'add_objects'),
-           3: ('Sample grasps', 'sample_grasps'),
-           4: ('Compute metrics', 'compute_metrics'),
-           5: ('Display object', 'display_object'),
-           6: ('Display stable poses for object', 'display_stable_poses'),
-           7: ('Display grasps for object', 'display_grasps'),
-           8: ('Generate simulation data for object', 'compute_simulation_data'),
-           9: ('Compute metadata', 'compute_metadata'),
-           10:('Display metadata', 'display_metadata'),
-           11:('Export objects', 'export_objects'),
-           12:('Set config (advanced)', 'set_config'),
-           13:('Quit', 'close')
+           3: ('Add YCB google_512k object(s) to the dataset', 'add_ycb_objects')
+           4: ('Sample grasps', 'sample_grasps'),
+           5: ('Compute metrics', 'compute_metrics'),
+           6: ('Display object', 'display_object'),
+           7: ('Display stable poses for object', 'display_stable_poses'),
+           8: ('Display grasps for object', 'display_grasps'),
+           9: ('Generate simulation data for object', 'compute_simulation_data'),
+           10: ('Compute metadata', 'compute_metadata'),
+           11:('Display metadata', 'display_metadata'),
+           12:('Export objects', 'export_objects'),
+           13:('Set config (advanced)', 'set_config'),
+           14:('Quit', 'close')
            }
 
     def __init__(self):
@@ -214,7 +215,24 @@ class DexNet_cli(object):
         except RuntimeError as e:
             print(str(e))
             return False
-    
+
+    def _add_ycb_object(self, obj_path):
+        """ Add objects """
+        if os.path.isdir(obj_path):
+            obj_path += '/google_512k'
+            obj_filenames = [obj_path + "/" + fname for fname in os.listdir(obj_path)
+                             if os.path.splitext(fname)[1] in SUPPORTED_MESH_FORMATS]
+            print(obj_filenames)
+        else:
+            obj_filenames = [obj_path]
+        for obj_filename in obj_filenames:
+            print("Creating graspable for {}".format(obj_filename))
+            try:
+                self.dexnet_api.add_object(obj_filename)
+            except Exception as e:
+                print("Adding object failed: {}".format(str(e)))
+        return True
+
     # commands below
     def open_database(self):
         """ Open a database """
@@ -242,6 +260,14 @@ class DexNet_cli(object):
         except Exception as e:
             print("Opening database failed: {}".format(str(e)))
         return True
+
+    def get_folder_name(self, file_dir_):
+        file_list = []
+        for root, dirs, files in os.walk(file_dir_):
+            if root.count('/') == file_dir_.count('/') + 1:
+                file_list.append(root)
+        file_list.sort()
+        return file_list
 
     def open_dataset(self):
         """ Open a dataset """
@@ -274,6 +300,23 @@ class DexNet_cli(object):
             print("Opening dataset failed: {}".format(str(e)))
         return True
 
+    def add_ycb_objects(self):
+        if not self._check_opens(): return True
+        
+        object_path = self._get_checked_input(lambda x: os.path.splitext(x)[1] in SUPPORTED_MESH_FORMATS + [''],
+                                           "path to a mesh file or directory")
+        if object_path is None: return True
+        object_path = os.path.realpath(object_path)
+
+        folder_list = self.get_folder_name(object_path)
+        object_numbers = folder_list.__len__()
+
+        for i in range(object_numbers):
+            print(folder_list[i])
+            self._add_ycb_object(folder_list[i])
+            
+        return True
+    
     def add_objects(self):
         """ Add objects """
         if not self._check_opens(): return True
