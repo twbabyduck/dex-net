@@ -11,7 +11,7 @@ gripper_dir: data/grippers
 cache_dir: .dexnet
 
 grasp_sampler: antipodal
-target_num_grasps: 25
+target_num_grasps: 100
 num_grasp_rots: 32
 
 sampling_friction_coef: 0.5

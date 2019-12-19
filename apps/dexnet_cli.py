@@ -322,12 +322,28 @@ class DexNet_cli(object):
         objects = self.dexnet_api.list_objects()
         object_name = self._get_fixed_input(objects + [''], "object key [ENTER for entire dataset]")
         if object_name is None: return True
+        metrics = self.dexnet_api.list_metrics()
+        metric_name = self._get_fixed_input(metrics + [''], "metric name [ENTER for all metrics]")
+        if metric_name is None: return True
         
         try:
             self.dexnet_api.sample_grasps(object_name=None if object_name is '' else object_name,
                                           gripper_name=None if gripper_name is '' else gripper_name)
         except Exception as e:
             print("Sampling grasps failed: {}".format(str(e)))
+
+        try:
+            self.dexnet_api.compute_metrics(metric_name=None if metric_name is '' else metric_name,
+                                            object_name=None if object_name is '' else object_name,
+                                            gripper_name=None if gripper_name is '' else gripper_name)
+        except Exception as e:
+            print("Computing metrics failed: {}".format(str(e)))
+        
+        try:
+            self.dexnet_api.display_grasps(object_name, gripper_name, metric_name)
+        except Exception as e:
+            print("Display grasps failed: {}".format(str(e)))
+            
         return True
 
     def compute_metrics(self):
