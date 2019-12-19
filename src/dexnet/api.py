@@ -53,6 +53,7 @@ except:
 
 DEXNET_DIR = os.path.realpath(os.path.dirname(os.path.realpath(__file__)) + '/../../') + '/'
 DEXNET_API_DEFAULTS_FILE = DEXNET_DIR + 'cfg/api_defaults.yaml'
+DEXNET_CONFIG = DEXNET_DIR + 'test/config.yaml'
 
 class DexNet(object):
     """Class providing an interface for main DexNet pipeline
@@ -409,7 +410,7 @@ class DexNet(object):
             Database or dataset not opened.
         """
         self._check_opens()
-        config = YamlConfig(DEXNET_API_DEFAULTS_FILE)
+        config = YamlConfig(DEXNET_CONFIG)
         
         grippers = os.listdir(config['gripper_dir'])
         if gripper_name is not None:
@@ -459,6 +460,7 @@ class DexNet(object):
         """ Computes metrics for the grasps associated with the given object """
         # load grasps
         grasps = self.dataset.grasps(obj.key, gripper=gripper.name)
+        config = YamlConfig(DEXNET_CONFIG)
 
         # load stable poses
         if stable_pose_id is None:
@@ -468,6 +470,8 @@ class DexNet(object):
 
         # setup metrics to compute
         metric_dict = config['metrics']
+        #print(metric_dict)
+	
         if metric_name is not None and metric_name in metric_dict.keys():
             metric_dict = {metric_name: config['metrics'][metric_name]}
 
