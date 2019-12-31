@@ -442,7 +442,8 @@ class DexNet(object):
                 obj = self.dataset[object_name]
                 grasps = DexNet._single_obj_grasps(self.dataset, obj, gripper, config, stable_pose_id=stable_pose)
                 self.dataset.store_grasps(obj.key, grasps, gripper=gripper.name)
-                self.database.flush()
+                print(grasps)
+		self.database.flush()
                 grasps_stop = time.time()
                 logger.info('Sampling grasps took %.3f sec' %(grasps_stop - grasps_start))
             

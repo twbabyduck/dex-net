@@ -1,6 +1,3 @@
-[submodule "deps/meshpy"]
-	path = deps/meshpy
-	url = https://github.com/BerkeleyAutomation/meshpy
 [submodule "deps/autolab_core"]
 	path = deps/autolab_core
 	url = https://github.com/BerkeleyAutomation/autolab_core
@@ -19,3 +16,6 @@
 [submodule "deps/visualization"]
 	path = deps/visualization
 	url = https://github.com/twbabyduck/visualization
+[submodule "deps/meshpy"]
+	path = deps/meshpy
+	url = https://github.com/twbabyduck/meshpy
