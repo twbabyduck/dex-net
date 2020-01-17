@@ -1,5 +1,79 @@
 # Berkeley AUTOLAB's Dex-Net Package
 
+## Installation Guide
+### Install apt packages
+```
+# visualization
+sudo apt install libspatialindex-dev python-rtree
+```
+### Install pip packages
+```
+pip install -r requirements.txt --user
+```
+### Install submodule library - dex-net dependencies
+```
+git submodule update --init --recursive
+```
+For each submodule - autolab_core, mayavi, meshpy, perception, visualization
+```
+python setup.py develop --user
+```
+For each submodule - Boost.NumPy, SDFGen
+```
+cd SDFGen
+sudo sh install.sh
+
+cd Boost.NumPy
+sudo sh install.sh
+```
+## Quick Start
+### Download Dataset
+(1) First Download the example dataset provided by Dex-Net
+```
+wget -O example.hdf5 https://berkeley.box.com/shared/static/d8krg2p61xvt2pczxoyk0fqirbbflssu.hdf5
+```
+(2) RUN CLI command
+```
+python apps/dexnet_cli.py
+```
+You should see the following terminal output:
+
+![alt text](imgs/cli.png)
+
+### Import Objects from given folders
+
+Before Sampling Grasps on any objects from the example dataset (example.hdf5), you have to use command line to access its database by entering "0" and entering the path for example.hdf5. (If you enter a path/file which is not exist then the prompt will ask to create a new database). 
+
+Each database can contains multiple dataset, and in `example.hdf5` there is only one dataset called `mini_dexnet`, and that is why when you open the example database, the program automatically open mini_dexnet as default. 
+
+After you open a dataset, then you can do the following command depends, for example, add more objects into dataset, or sampling graps on objects inside the dataset.
+
+### Import Objects from given folders
+(1) SELECT "2"
+(2) INPUT FOLDER PATH
+
+You should see the program automatically import every objects in given folders the same file name.
+
+<!-- ![alt text](imgs/import_objects.png)
+ -->
+
+### Sampling Grasps on a single object
+(1) MODIFY `test/config.yaml` TO SET TARGET NUMBER OF GRASPS GENERATE ON OBJECT
+(2) SELECT "3"
+(3) PICK ONE OF OBJECTS TO SAMPLE GRASPS
+
+TODO:
+- Add one more function to sampling grasps for each objects inside the dataset.
+- Save the grasps and metric result into numpy format into different files.
+
+### Visualize Grasps
+(1) SELECT "7"
+(2) PICK ONE OF OBJECTS TO VISUALIZE
+
+You should see the following result:
+
+![alt text](imgs/RESULT.png)
+
 ## Links
 [Documentation](https://berkeleyautomation.github.io/dex-net/code.html)
 
